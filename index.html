@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iOS Simulator</title>
+  <link rel="stylesheet" href="style.css" type="text/css" media="all" />
+</head>
+<body>
+
+  <!-- Sélecteur 3 barres -->
+  <div class="picker">
+    <button class="menu-btn" id="menuBtn" aria-label="Choisir un modèle" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <div class="menu" id="menu" role="menu">
+      <button class="item active" data-w="300" data-h="625" data-border="#3C3C3C">
+        <span>iPhone 16 Pro</span><i class="check">✓</i>
+      </button>
+      <button class="item" data-w="310" data-h="645" data-border="#3C3C3C">
+        <span>iPhone 16 Pro Max</span><i class="check">✓</i>
+      </button>
+      <button class="item" data-w="300" data-h="625" data-border="#32374A">
+        <span>iPhone 17 Pro</span><i class="check">✓</i>
+      </button>
+      <button class="item" data-w="310" data-h="645" data-border="#32374A">
+        <span>iPhone 17 Pro Max</span><i class="check">✓</i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Shell iPhone (HTML/CSS) -->
+  <div class="iphone">
+    <div class="screen">
+      <!-- Le Swift/SwiftUI s'affiche ici -->
+      <div id="swift-root"></div>
+      <div class="dynamic-island"></div>
+    </div>
+  </div>
+
+  <script src="index.js"></script>
+  <!-- Chargeur WebAssembly généré par carton -->
+  <script src="dev.js"></script>
+</body>
+  </html>
