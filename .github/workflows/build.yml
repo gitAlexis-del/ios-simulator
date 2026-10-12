@@ -16,38 +16,29 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
+    container: swift:6.3
     steps:
       - uses: actions/checkout@v4
 
-      - name: Installer SwiftWasm (version imposée)
+      - name: Installer le SDK WebAssembly
         uses: swiftwasm/setup-swiftwasm@v2
-        with:
-          tag: "swift-wasm-5.9.1-RELEASE"
 
-      - name: Vérifier la toolchain
-        run: swift --version
-
-      - name: Installer carton
-        run: |
-          git clone --depth 1 --branch 0.20.1 https://github.com/swiftwasm/carton.git /tmp/carton
-          cd /tmp/carton
-          swift build -c release
-          sudo cp .build/release/carton /usr/local/bin/carton
-
-      - name: Build avec carton
-        run: carton bundle --custom-index-page index.html
+      - name: Compiler le Swift en WebAssembly
+        run: swift package --swift-sdk wasm32-unknown-wasi js --product iOSApp
 
       - name: Préparer le site
         run: |
-          cp -r images Bundle/ || true
-          cp style.css index.js Bundle/ || true
+          mkdir -p site
+          cp -r .build/plugins/PackageToJS/outputs/Package/* site/
+          cp index.html style.css shell.js site/
+          cp -r images site/ || true
 
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: Bundle
+          path: site
 
   deploy:
     needs: build
