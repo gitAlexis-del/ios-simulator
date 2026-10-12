@@ -23,7 +23,7 @@ jobs:
       - name: Installer SwiftWasm (version imposée)
         uses: swiftwasm/setup-swiftwasm@v2
         with:
-          swift-version: "wasm-5.9.1-RELEASE"
+          tag: "swift-wasm-5.9.1-RELEASE"
 
       - name: Vérifier la toolchain
         run: swift --version
