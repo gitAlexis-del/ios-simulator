@@ -16,16 +16,21 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
-      - name: Installer SwiftWasm
+      - name: Installer SwiftWasm (version imposée)
         uses: swiftwasm/setup-swiftwasm@v2
+        with:
+          swift-version: "wasm-5.9.1-RELEASE"
+
+      - name: Vérifier la toolchain
+        run: swift --version
 
       - name: Installer carton
         run: |
-          git clone --depth 1 https://github.com/swiftwasm/carton.git /tmp/carton
+          git clone --depth 1 --branch 0.20.1 https://github.com/swiftwasm/carton.git /tmp/carton
           cd /tmp/carton
           swift build -c release
           sudo cp .build/release/carton /usr/local/bin/carton
