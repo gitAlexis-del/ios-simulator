@@ -14,6 +14,11 @@ concurrency:
   group: pages
   cancel-in-progress: true
 
+env:
+  SDK_URL: https://github.com/swiftwasm/swift/releases/download/swift-wasm-6.3-SNAPSHOT-2026-06-11-a/swift-wasm-6.3-SNAPSHOT-2026-06-11-a-wasm32-unknown-wasip1.artifactbundle.zip
+  SDK_CHECKSUM: bc137de7c40192a31bf0ca4154dc815d9f4bdde2e37a1ac7497028b6259ee49f
+  SDK_ID: 6.3-SNAPSHOT-2026-06-11-a-wasm32-unknown-wasip1
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,15 +26,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Installer le SDK WebAssembly
-        id: sdk
-        uses: swiftwasm/setup-swiftwasm@v2
-        with:
-          tag: "swift-6.3.2-RELEASE"
-          target: "wasm32-unknown-wasip1"
+      - name: Installer le SDK WebAssembly (avec nouvelles tentatives)
+        shell: bash
+        run: |
+          for i in 1 2 3 4 5; do
+            if swift sdk install "$SDK_URL" --checksum "$SDK_CHECKSUM"; then
+              break
+            fi
+            if [ "$i" = "5" ]; then
+              echo "Échec du téléchargement après 5 tentatives"
+              exit 1
+            fi
+            echo "Tentative $i échouée, nouvelle tentative dans $((i * 20))s..."
+            sleep $((i * 20))
+          done
+          swift sdk list
 
       - name: Compiler le Swift en WebAssembly
-        run: swift package --swift-sdk "${{ steps.sdk.outputs.swift-sdk-id }}" js --product iOSApp
+        run: swift package --swift-sdk "$SDK_ID" js --product iOSApp
 
       - name: Préparer le site
         run: |
