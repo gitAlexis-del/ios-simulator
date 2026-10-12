@@ -17,12 +17,14 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: swift:6.3
+    container: swift:6.3.2
     steps:
       - uses: actions/checkout@v4
 
       - name: Installer le SDK WebAssembly
         uses: swiftwasm/setup-swiftwasm@v2
+        with:
+          tag: "swift-6.3.2-RELEASE"
 
       - name: Compiler le Swift en WebAssembly
         run: swift package --swift-sdk wasm32-unknown-wasi js --product iOSApp
