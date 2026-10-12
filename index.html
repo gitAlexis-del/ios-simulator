@@ -38,8 +38,10 @@
       <div class="dynamic-island"></div>
     </div>
   </div>
-
-  <script src="index.js"></script>
-  <!-- Chargeur WebAssembly généré par carton -->
+    <script src="shell.js"></script>
+  <script type="module">
+    import { init } from "./index.js";
+    await init();
+  </script>
 </body>
-  </html>
+</html>
